@@ -1,0 +1,27 @@
+name: "Call my action"
+
+on:
+  push:
+    branches: [main]
+    paths: [containerAction/**]
+
+  workflow_dispatch:
+    inputs:
+      who-to-greet:
+        description: "Who to say hi to"
+        type: string
+        required: true
+jobs:
+  testmyaction:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@4
+      - name: test-the-action
+        id: action-checker
+        uses: ./containerAction
+        with:
+          who-to-greet: ${{ inputs.who-to-greet }}
+      - name: show output
+        run: echo "The time was ${{ steps.action-checker.outputs.time }} when the action said hello"
+          
