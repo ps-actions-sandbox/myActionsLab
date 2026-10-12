@@ -1,0 +1,25 @@
+name: My First Action
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '02 13 * * 5'
+  workflow_dispatch:
+
+jobs:
+  HelloWorld:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "🎣 ${{github.action_repository}} triggered by ${{ github.event_name}}"
+          echo "Building branch ${{ github.ref }}"  
+      - uses: actions/checkout@v4.3.1
+      - name: List Files
+        run: |
+           echo "The repo ${{ github.repository }} contains the following"
+           tree
+          
+
+      
