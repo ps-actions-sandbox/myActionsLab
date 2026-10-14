@@ -1,0 +1,24 @@
+name: env-demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      environments:
+        type: environment
+        description: Which environment?
+        required: true
+
+jobs:
+  showmyvars:
+    runs-on: ubuntu-slim
+    strategy:
+      fail-fast: false
+      matrix:
+        env: [dev,qa]
+    environment: ${{ matrix.env }}
+
+    steps:
+      - run:  echo ${{vars.svcAccountName}} ; echo ${{ secrets.svcAccountPassword }}
+      - if: matrix.env == ${{ inputs.environments }}
+        run: echo "Selected Environment ${{ inputs.environments }} " >> $GITHUB_STEP_SUMMARY  
+      
